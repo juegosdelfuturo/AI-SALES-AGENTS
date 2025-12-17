@@ -34,7 +34,7 @@ const ManagerDashboard: React.FC = () => {
                             <XAxis type="number" dataKey="x" name="Training Vol" stroke="#9CA3AF" fontSize={12} tickLine={false} axisLine={false} />
                             <YAxis type="number" dataKey="y" name="Close Rate" stroke="#9CA3AF" fontSize={12} tickLine={false} axisLine={false} />
                             <Tooltip cursor={{ strokeDasharray: '3 3' }} contentStyle={{ backgroundColor: '#FFF', borderColor: '#E5E7EB', color: '#111', borderRadius: '8px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }} />
-                            <Scatter name="Team" data={teamData} fill="#8B5CF6" />
+                            <Scatter name="Team" data={teamData} fill="#DC2626" />
                         </ScatterChart>
                     </ResponsiveContainer>
                 </div>
@@ -51,7 +51,7 @@ const ManagerDashboard: React.FC = () => {
                             <YAxis stroke="#9CA3AF" fontSize={12} tickLine={false} axisLine={false} />
                             <Tooltip contentStyle={{ backgroundColor: '#FFF', borderColor: '#E5E7EB', color: '#111', borderRadius: '8px' }} />
                             <Line type="monotone" dataKey="avg" stroke="#9CA3AF" strokeDasharray="5 5" strokeWidth={2} name="Gold Standard" dot={false} />
-                            <Line type="monotone" dataKey="newHire" stroke="#8B5CF6" strokeWidth={3} name="Current Cohort" dot={{ r: 4, fill: '#8B5CF6' }} />
+                            <Line type="monotone" dataKey="newHire" stroke="#DC2626" strokeWidth={3} name="Current Cohort" dot={{ r: 4, fill: '#DC2626' }} />
                         </LineChart>
                     </ResponsiveContainer>
                 </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Mic, MicOff, PhoneOff, BarChart2, User, Volume2, Clock } from 'lucide-react';
+import { Mic, MicOff, PhoneOff, User, Volume2, Clock } from 'lucide-react';
 import { Language, Persona, Session } from '../types';
 import { TRANSLATIONS, MOCK_PERSONAS } from '../constants';
 
@@ -12,7 +12,6 @@ interface DojoProps {
 
 const TheDojo: React.FC<DojoProps> = ({ lang, onEndSession, selectedPersona, personas }) => {
   const [active, setActive] = useState(false);
-  const [sentiment, setSentiment] = useState(50); // 0-100
   const [currentPersona, setCurrentPersona] = useState<Persona>(selectedPersona || personas[0] || MOCK_PERSONAS[0]);
   
   // Timer State
@@ -25,18 +24,6 @@ const TheDojo: React.FC<DojoProps> = ({ lang, onEndSession, selectedPersona, per
         setCurrentPersona(selectedPersona);
     }
   }, [selectedPersona]);
-
-  // Simulation Loop for Sentiment
-  useEffect(() => {
-    if (!active) return;
-    const interval = setInterval(() => {
-      setSentiment(prev => {
-        const change = (Math.random() - 0.5) * 10;
-        return Math.max(0, Math.min(100, prev + change));
-      });
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [active]);
 
   // Timer Logic
   useEffect(() => {
@@ -75,6 +62,8 @@ const TheDojo: React.FC<DojoProps> = ({ lang, onEndSession, selectedPersona, per
     const secs = seconds % 60;
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
+
+  const getInitials = (name: string) => name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
 
   const renderWaveform = () => (
     <div className="flex items-center justify-center space-x-1 h-24 w-full max-w-xs mx-auto">
@@ -115,12 +104,10 @@ const TheDojo: React.FC<DojoProps> = ({ lang, onEndSession, selectedPersona, per
         {/* Persona Info */}
         <div className="relative z-10 p-12 text-center flex-1 flex flex-col justify-center items-center">
             <div className="relative mb-8">
-                <div className="w-32 h-32 rounded-full p-1 bg-gradient-to-br from-primary-light to-primary">
-                    <img 
-                        src={currentPersona.avatarUrl} 
-                        alt={currentPersona.name} 
-                        className="w-full h-full rounded-full border-4 border-white object-cover"
-                    />
+                <div className="w-32 h-32 rounded-full p-1 bg-gradient-to-br from-primary-light to-primary flex items-center justify-center">
+                    <div className="w-full h-full rounded-full border-4 border-white bg-white flex items-center justify-center text-4xl font-bold text-primary">
+                        {getInitials(currentPersona.name)}
+                    </div>
                 </div>
             </div>
             
@@ -177,33 +164,11 @@ const TheDojo: React.FC<DojoProps> = ({ lang, onEndSession, selectedPersona, per
         </div>
       </div>
 
-      {/* Sidebar: Sentiment & Controls */}
+      {/* Sidebar: Controls */}
       <div className="w-full md:w-80 flex flex-col gap-6">
-        {/* Sentiment Meter */}
-        <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-            <div className="flex items-center justify-between mb-6">
-                <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider">{TRANSLATIONS.liveSentiment?.[lang] || 'SENTIMENT'}</h3>
-                <BarChart2 size={18} className="text-gray-400" />
-            </div>
-            
-            <div className="relative h-64 bg-gray-100 rounded-xl overflow-hidden flex flex-col-reverse w-full">
-                <div 
-                    className={`w-full transition-all duration-700 ease-in-out ${
-                        sentiment > 60 ? 'bg-green-400' : 
-                        sentiment < 40 ? 'bg-red-400' : 
-                        'bg-yellow-400'
-                    }`}
-                    style={{ height: `${sentiment}%` }}
-                ></div>
-            </div>
-            <div className="flex justify-between mt-3 text-xs font-semibold text-gray-500 uppercase">
-                <span>Negative</span>
-                <span>Positive</span>
-            </div>
-        </div>
-
+        
         {/* Persona Switcher */}
-        <div className="bg-white border border-gray-200 rounded-2xl p-6 flex-1 shadow-sm overflow-y-auto max-h-[400px]">
+        <div className="bg-white border border-gray-200 rounded-2xl p-6 flex-1 shadow-sm overflow-y-auto max-h-[calc(100vh-140px)]">
             <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Quick Switch</h3>
             <div className="space-y-3">
                 {personas.map(p => (
@@ -216,7 +181,9 @@ const TheDojo: React.FC<DojoProps> = ({ lang, onEndSession, selectedPersona, per
                             : 'bg-white border-gray-100 hover:border-gray-300'
                         } ${active ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
-                        <img src={p.avatarUrl} className="w-10 h-10 rounded-full object-cover" alt="avatar" />
+                        <div className="w-10 h-10 rounded-full bg-primary-bg flex items-center justify-center text-xs font-bold text-primary-dark">
+                            {getInitials(p.name)}
+                        </div>
                         <div>
                             <div className={`text-sm font-bold ${currentPersona.id === p.id ? 'text-primary-dark' : 'text-gray-900'}`}>{p.name}</div>
                             <div className="text-xs text-gray-500">{p.role}</div>

@@ -19,13 +19,13 @@ const Debrief: React.FC<DebriefProps> = ({ lang, sessions }) => {
   const scoreValue = latestSession ? latestSession.score : 84;
   
   const scoreData = [
-    { name: 'Score', uv: scoreValue, fill: '#8B5CF6' } // Primary Purple
+    { name: 'Score', uv: scoreValue, fill: '#DC2626' } // Primary Red
   ];
 
   const kpiData = [
-    { name: 'Discovery', score: latestSession ? Math.min(100, latestSession.score + 5) : 90, fill: '#8B5CF6' },
+    { name: 'Discovery', score: latestSession ? Math.min(100, latestSession.score + 5) : 90, fill: '#DC2626' }, // Red
     { name: 'Empathy', score: latestSession ? Math.min(100, latestSession.score - 10) : 65, fill: '#60A5FA' }, // Blue
-    { name: 'Closing', score: latestSession ? Math.min(100, latestSession.score - 20) : 45, fill: '#F87171' }, // Red
+    { name: 'Closing', score: latestSession ? Math.min(100, latestSession.score - 20) : 45, fill: '#1F2937' }, // Dark Gray for contrast
     { name: 'Objection', score: latestSession ? Math.min(100, latestSession.score + 2) : 80, fill: '#FBBF24' }, // Amber
   ];
 
@@ -47,6 +47,8 @@ const Debrief: React.FC<DebriefProps> = ({ lang, sessions }) => {
   const formatDate = (dateStr: string) => {
     return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
   };
+  
+  const getInitials = (name: string) => name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full overflow-y-auto pb-20">
@@ -207,7 +209,9 @@ const Debrief: React.FC<DebriefProps> = ({ lang, sessions }) => {
                             <tr key={session.id} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
                                 <td className="py-4">
                                     <div className="flex items-center gap-3">
-                                        <img src={session.avatarUrl} alt="" className="w-8 h-8 rounded-full" />
+                                        <div className="w-8 h-8 rounded-full bg-primary-bg flex items-center justify-center text-xs font-bold text-primary-dark">
+                                            {getInitials(session.personaName)}
+                                        </div>
                                         <span className="font-bold text-gray-900">{session.personaName}</span>
                                     </div>
                                 </td>

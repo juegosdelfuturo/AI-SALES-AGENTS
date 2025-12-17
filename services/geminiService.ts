@@ -1,7 +1,8 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Persona } from "../types";
 
-const apiKey = process.env.API_KEY || '';
+// Safety check for process.env
+const apiKey = (typeof process !== 'undefined' && process.env && process.env.API_KEY) || '';
 
 // Initialize safely
 const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;

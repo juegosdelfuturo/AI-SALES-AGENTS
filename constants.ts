@@ -2,8 +2,8 @@ import { Candidate, Language, Persona, TranslationDictionary } from './types';
 
 export const COLORS = {
   background: '#F9FAFB',
-  primary: '#8B5CF6',
-  secondary: '#DDD6FE',
+  primary: '#DC2626', // Red 600
+  secondary: '#FECACA', // Red 200
   danger: '#EF4444',
   card: '#FFFFFF',
   text: '#1F2937',

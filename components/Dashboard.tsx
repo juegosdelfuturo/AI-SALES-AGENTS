@@ -9,6 +9,8 @@ interface DashboardProps {
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ personas, onCreateNew, onSelectPersona }) => {
+  const getInitials = (name: string) => name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+
   return (
     <div className="h-full overflow-y-auto pb-20">
       <div className="flex justify-between items-end mb-8">
@@ -58,11 +60,9 @@ const Dashboard: React.FC<DashboardProps> = ({ personas, onCreateNew, onSelectPe
 
              <div className="flex flex-col items-center text-center flex-1">
                 <div className="w-20 h-20 rounded-full p-1 bg-gradient-to-br from-gray-100 to-gray-200 mb-4 group-hover:from-primary-light group-hover:to-primary transition-colors">
-                    <img 
-                        src={persona.avatarUrl} 
-                        alt={persona.name} 
-                        className="w-full h-full rounded-full object-cover border-2 border-white"
-                    />
+                    <div className="w-full h-full rounded-full bg-white border-2 border-white flex items-center justify-center text-xl font-bold text-gray-500 group-hover:text-primary">
+                         {getInitials(persona.name)}
+                    </div>
                 </div>
                 <h3 className="font-bold text-lg text-gray-900 line-clamp-1">{persona.name}</h3>
                 <p className="text-sm text-gray-500 line-clamp-1">{persona.role}</p>
