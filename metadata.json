@@ -1,0 +1,7 @@
+{
+  "name": "Bloom Sales Training",
+  "description": "Professional AI sales training platform with realistic persona generation.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
